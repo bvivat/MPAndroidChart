@@ -167,21 +167,23 @@ public abstract class AxisRenderer extends Renderer {
 
         // If granularity is enabled, then do not allow the interval to go below specified granularity.
         // This is used to avoid repeated values when rounding values for display.
-        if (mAxis.isGranularityEnabled())
+        if (mAxis.isGranularityEnabled()){
             interval = interval < mAxis.getGranularity() ? mAxis.getGranularity() : interval;
+        }else {
 
-        // Normalize interval
-        double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10(interval)));
-        int intervalSigDigit = (int) (interval / intervalMagnitude);
-        if (intervalSigDigit > 5) {
-            // Use one order of magnitude higher, to avoid intervals like 0.9 or 90
-            // if it's 0.0 after floor(), we use the old value
-            interval = Math.floor(10.0 * intervalMagnitude) == 0.0
-                    ? interval
-                    : Math.floor(10.0 * intervalMagnitude);
 
+            // Normalize interval
+            double intervalMagnitude = Utils.roundToNextSignificant(Math.pow(10, (int) Math.log10(interval)));
+            int intervalSigDigit = (int) (interval / intervalMagnitude);
+            if (intervalSigDigit > 5) {
+                // Use one order of magnitude higher, to avoid intervals like 0.9 or 90
+                // if it's 0.0 after floor(), we use the old value
+                interval = Math.floor(10.0 * intervalMagnitude) == 0.0
+                        ? interval
+                        : Math.floor(10.0 * intervalMagnitude);
+
+            }
         }
-
         int n = mAxis.isCenterAxisLabelsEnabled() ? 1 : 0;
 
         // force label count
